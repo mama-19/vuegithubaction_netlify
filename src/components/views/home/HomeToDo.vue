@@ -1,6 +1,6 @@
 <template>
     <div style="width: 380px; margin: 0 auto;">
-        <h1 class="h2 mt-5">CDL - To Do List</h1>
+        <h1 class="h2 mt-5">CDL - To Do List Github Action</h1>
 
         <form class="mt-5" @submit.prevent="onClickAdd()">
             <div class="d-flex">
