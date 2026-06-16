@@ -1,20 +1,38 @@
-
-name: Test Flast API
+name: Deploy to Netlify
 
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
-
-#Task
+    branches:
+      - main
+  # pull_requests:
+    pull_request:
+      - main
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    # To clone code to work on
-      # - name: Clone Repo
-        # run: git clone https://github.com/mama-19/githubaction_flast.git
-      - name: Floder list
-      # Terminal
-        run: ls 
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3
+        with:
+          publish-dir: ./dist
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "GitHub Actions Deploy"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
